@@ -1,0 +1,37 @@
+# This Containerfile expects a secret named "creds" to contain
+# the registry pull secret.  To build, use e.g. 
+# podman build --secret id=creds,src=$HOME/.config/containers/auth.json ...
+FROM registry.redhat.io/rhel9/rhel-bootc:latest
+
+USER root
+
+COPY containers-auth.conf /usr/lib/tmpfiles.d/link-podman-credentials.conf
+RUN --mount=type=secret,id=creds,required=true cp /run/secrets/creds /usr/lib/container-auth.json && \
+    chmod 0600 /usr/lib/container-auth.json && \
+    ln -sr /usr/lib/container-auth.json /etc/ostree/auth.json
+
+ADD etc etc
+
+RUN ls /etc/containers/systemd
+
+# Install base packages
+RUN dnf \
+    --enablerepo=rhel-9-for-x86_64-baseos-rpms \
+    --enablerepo=rhel-9-for-x86_64-appstream-rpms \
+    install -y \
+    podman \
+    tmux \
+    mkpasswd \
+    && dnf clean all \
+    && rm -rf /var/{cache,log} /var/lib/{dnf,rhsm}
+
+# Modify the SELinux config
+# RUN sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
+# Install FlightCTL services
+RUN dnf \
+    install -y \
+    flightctl-services \
+    && rm -rf /var/{cache,log} /var/lib/{dnf,rhsm}
+
+CMD [ "/sbin/init" ]

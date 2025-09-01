@@ -1,0 +1,3 @@
+[Network]
+Driver=bridge
+Name=ssonet

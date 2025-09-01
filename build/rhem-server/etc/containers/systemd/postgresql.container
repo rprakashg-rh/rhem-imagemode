@@ -1,0 +1,17 @@
+[Unit]
+Description=PostgreSQL for Keycloak
+After=network.target ssonet.network
+Wants=ssonet.network
+
+[Container]
+Image=postgres:16
+Name=postgres
+Network=ssonet
+Environment=POSTGRES_DB=keycloak
+Environment=POSTGRES_USER=keycloak
+Environment=POSTGRES_PASSWORD=keycloak
+Volume=keycloak-db:/var/lib/postgresql/data
+PublishPort=5432:5432
+
+[Install]
+WantedBy=default.target

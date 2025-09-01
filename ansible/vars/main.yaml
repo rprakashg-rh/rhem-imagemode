@@ -1,0 +1,5 @@
+ami_bucket_name: bootc-amis 
+aws_region: us-west-2
+registry: quay.io
+user: rgopinat
+secret: registry_password

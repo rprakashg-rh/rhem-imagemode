@@ -1,0 +1,69 @@
+---
+name: CI Workflow to build RHEM server imagemode container
+on:
+    workflow_dispatch:
+    push:
+        branches:
+        - main
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        env:
+            IMAGE_NAME: rhem-server
+            IMAGE_TAG: ${{ github.sha }}
+            REGISTRY: quay.io
+        container:
+            image: registry.access.redhat.com/ubi9/ubi
+            options: --privileged
+        steps:
+        - name: Clone the repository
+          uses: actions/checkout@v4
+        
+        - name: Get container tools in UBI builder
+          run: dnf -y install podman buildah skopeo
+        
+        - name: Access a subscription via activation key
+          env:
+            SMDEV_CONTAINER_OFF: 1
+            orgid: ${{ secrets.ORGID }}
+            activation_key: ${{ secrets.ACTIVATION_KEY }}
+          run: subscription-manager register --org=$orgid --activationkey=$activation_key
+        
+        - name: login to registry.redhat.io
+          uses: redhat-actions/podman-login@v1
+          with:
+            registry: registry.redhat.io
+            username: ${{ secrets.REGISTRY_USER }}
+            password: ${{ secrets.REGISTRY_USER_PASSWORD }}
+            auth_file_path: /run/containers/0/auth.json
+
+        - name: Buildah build
+          id: build-image
+          uses: redhat-actions/buildah-build@v2
+          with:
+            image: ${{ env.IMAGE_NAME }}
+            tags: ${{ env.IMAGE_TAG }}    
+            containerfiles: |
+                ./build/rhem-server/Containerfile
+            
+        - name: Login to registry
+          uses: redhat-actions/podman-login@v1
+          with:
+            registry: quay.io
+            username: ${{ secrets.REGISTRY_USER }}
+            password: ${{ secrets.REGISTRY_USER_PASSWORD }}
+            auth_file_path: /run/containers/0/auth.json
+        
+        - name: Push to GitHub Container Repository
+          id: push-to-ghcr
+          uses: redhat-actions/push-to-registry@v2
+          with:
+            image: ${{ steps.build-image.outputs.image }}
+            tags: ${{ steps.build-image.outputs.tags }}
+            registry: ${{ env.REGISTRY }}
+        
+        - name: Clean up the subscription
+          env:
+            SMDEV_CONTAINER_OFF: 1
+          run: subscription-manager unregister
