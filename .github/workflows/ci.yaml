@@ -47,7 +47,7 @@ jobs:
             password: ${{ secrets.REGISTRY_USER_PASSWORD }}
             auth_file_path: /run/containers/0/auth.json
         
-        - name: Login to registry
+        - name: Login to quay.io
           uses: redhat-actions/podman-login@v1
           with:
             registry: quay.io
@@ -64,14 +64,6 @@ jobs:
             containerfiles: |
                 ./build/rhem-server/Containerfile
             extra-args: --secret id=creds,src=$HOME/.docker/config.json
-
-        - name: Login to registry
-          uses: redhat-actions/podman-login@v1
-          with:
-            registry: quay.io
-            username: ${{ secrets.REGISTRY_USER }}
-            password: ${{ secrets.REGISTRY_USER_PASSWORD }}
-            auth_file_path: /run/containers/0/auth.json
         
         - name: Push to Container Repository
           id: push-to-registry
