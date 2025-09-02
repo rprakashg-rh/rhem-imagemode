@@ -63,7 +63,7 @@ jobs:
             tags: ${{ env.IMAGE_TAG }}    
             containerfiles: |
                 ./build/rhem-server/Containerfile
-            extra-args: --secret id=creds,src=$HOME/.docker/config.json
+            extra-args: --secret id=creds,src=/run/containers/0/auth.json
         
         - name: Push to Container Repository
           id: push-to-registry
