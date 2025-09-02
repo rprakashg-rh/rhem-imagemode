@@ -3,6 +3,8 @@ name: CI Workflow to build RHEM server imagemode container
 on:
     workflow_dispatch:
     push:
+        paths:
+        - 'build/**'
         branches:
         - main
 jobs:
@@ -61,7 +63,7 @@ jobs:
             tags: ${{ env.IMAGE_TAG }}    
             containerfiles: |
                 ./build/rhem-server/Containerfile
-            extra-args: --secret id=creds,src=/run/containers/0/auth.json
+            extra-args: --secret id=creds,src=$HOME/.docker/config.json
 
         - name: Login to registry
           uses: redhat-actions/podman-login@v1
@@ -71,8 +73,8 @@ jobs:
             password: ${{ secrets.REGISTRY_USER_PASSWORD }}
             auth_file_path: /run/containers/0/auth.json
         
-        - name: Push to GitHub Container Repository
-          id: push-to-ghcr
+        - name: Push to Container Repository
+          id: push-to-registry
           uses: redhat-actions/push-to-registry@v2
           with:
             image: ${{ steps.build-image.outputs.image }}
