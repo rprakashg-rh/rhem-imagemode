@@ -44,6 +44,14 @@ jobs:
             username: ${{ secrets.REGISTRY_USER }}
             password: ${{ secrets.REGISTRY_USER_PASSWORD }}
             auth_file_path: /run/containers/0/auth.json
+        
+        - name: Login to registry
+          uses: redhat-actions/podman-login@v1
+          with:
+            registry: quay.io
+            username: ${{ secrets.REGISTRY_USER }}
+            password: ${{ secrets.REGISTRY_USER_PASSWORD }}
+            auth_file_path: /run/containers/0/auth.json
 
         - name: Buildah build
           id: build-image
@@ -53,7 +61,8 @@ jobs:
             tags: ${{ env.IMAGE_TAG }}    
             containerfiles: |
                 ./build/rhem-server/Containerfile
-            
+            extra-args: --secret id=creds,src=/run/containers/0/auth.json
+
         - name: Login to registry
           uses: redhat-actions/podman-login@v1
           with:
