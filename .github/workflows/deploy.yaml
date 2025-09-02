@@ -11,6 +11,14 @@ jobs:
         steps:
         - name: Clone source
           uses: actions/checkout@v4
+        
+        - name: Access a subscription via activation key
+          env:
+            SMDEV_CONTAINER_OFF: 1
+            orgid: ${{ secrets.ORGID }}
+            activation_key: ${{ secrets.ACTIVATION_KEY }}
+          run: subscription-manager register --org=$orgid --activationkey=$activation_key
+
         - name: Setup ansible
           run: |
             dnf install -y ansible
@@ -20,3 +28,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           run: |
             ansible-playbook ./ansible/deploy.yaml
+        - name: Clean up the subscription
+          env:
+            SMDEV_CONTAINER_OFF: 1
+          run: subscription-manager unregister
