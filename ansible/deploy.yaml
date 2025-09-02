@@ -5,6 +5,10 @@
   vars_files:
   - vars/main.yaml
   tasks:
+  - name: Install Epel
+    ansible.builtin.shell: |
+      dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+  
   - name: Install required packages
     ansible.builtin.package:
       name:
