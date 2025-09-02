@@ -5,13 +5,15 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        container:
+            image: registry.access.redhat.com/ubi9/ubi
+            options: --privileged
         steps:
         - name: Clone source
           uses: actions/checkout@v4
         - name: Setup ansible
           run: |
-            sudo apt-get update
-            sudo apt-get install -y ansible
+            dnf install -y ansible
         - name: Run ansible playbook
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
