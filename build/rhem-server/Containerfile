@@ -12,8 +12,6 @@ RUN --mount=type=secret,id=creds,required=true cp /run/secrets/creds /usr/lib/co
 
 ADD etc etc
 
-RUN ls /etc/containers/systemd
-
 # Install base packages
 RUN dnf \
     --enablerepo=rhel-9-for-x86_64-baseos-rpms \
