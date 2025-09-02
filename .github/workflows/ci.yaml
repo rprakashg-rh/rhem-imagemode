@@ -60,7 +60,7 @@ jobs:
           uses: redhat-actions/buildah-build@v2
           with:
             image: ${{ env.IMAGE_NAME }}
-            tags: ${{ env.IMAGE_TAG }}    
+            tags: latest ${{ env.IMAGE_TAG }}    
             context: ./build/rhem-server/
             containerfiles: |
                 ./build/rhem-server/Containerfile
@@ -74,6 +74,25 @@ jobs:
             tags: ${{ steps.build-image.outputs.tags }}
             registry: ${{ env.REGISTRY }}
         
+        - name: Overlay image with cloud-init
+          id: build-cloudinit-overlay
+          uses: redhat-actions/buildah-build@v2
+          with:
+            image: ${{ env.IMAGE_NAME }}
+            tags: aws    
+            context: ./build/cloud-init/
+            containerfiles: |
+                ./build/cloud-init/Containerfile
+            build-args: |
+                FROM=${{ steps.build-image.outputs.image }}
+
+        - name: Push the cloud-init overlay image to registry
+          uses: redhat-actions/push-to-registry@v2
+          with:
+            image: ${{ steps.build-cloudinit-overlay.outputs.image }}
+            tags: ${{ steps.build-cloudinit-overlay.outputs.tags }}
+            registry: ${{ env.REGISTRY }}
+
         - name: Clean up the subscription
           env:
             SMDEV_CONTAINER_OFF: 1
