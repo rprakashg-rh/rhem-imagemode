@@ -1,0 +1,27 @@
+#cloud-config
+users:
+- name: "{{ admin_user }}"
+  ssh_authorized_keys: 
+  - "{{ ssh_key }}"
+  groups: ["wheel"]
+  shell: /bin/bash
+  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+runcmd:
+  - echo "Welcome to RHEM on RHEL Image Mode!" > /etc/motd
+{% for command in commands %}
+  - {{ command }}
+{% endfor %}
+
+write_files:
+- path: /etc/flightctl/certs.d/
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+
+- path: /etc/flightctl/conf.d/config.yaml
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+    
+

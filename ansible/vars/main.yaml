@@ -3,6 +3,17 @@ ami_bucket_name: bootc-amis
 aws_region: us-west-2
 registry: quay.io
 user: rgopinat
-secret: registry_password
+
+# certificate related data
 domain_name: edgemanager.sandbox390.opentlc.com
 email: ram.gopinathan@redhat.com
+
+# Instance related data
+ami: ami-06c308fc41dbc9c80
+instance_name: rhem-server
+instance_type: t2.2xlarge
+key_name: ec2
+subnet_id: subnet-0e844dcb8323edd2c
+security_group_id: sg-0fa0b407346360849
+storage: 50
+commands: []

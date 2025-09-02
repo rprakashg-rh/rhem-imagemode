@@ -47,3 +47,39 @@
   - name: Show certificate location
     ansible.builtin.debug:
       msg: "Certificate installed at /etc/letsencrypt/live/{{ domain_name }}/"
+  
+  - name: load secrets 
+    ansible.builtin.include_vars:
+      file: "./vars/secrets.yml"
+  
+  - name: Add the SSH key if doesn't exist
+    amazon.aws.ec2_key:
+      name: "{{ key_name }}"
+      key_material: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
+    state: present
+
+  - name: Launch ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ instance_name }}"
+      instance_type: "{{ instance_type }}"
+      key_name: "{{ key_name }}"
+      image_id: "{{ ami }}"
+      subnet_id: "{{ subnet_id }}"
+      security_group: "{{ security_group_id }}"
+      volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: "{{ storage }}"
+          volume_type: gp3
+      network_interfaces:
+      - assign_public_ip: true
+      wait: true
+      count: 1
+      user_data: "{{ lookup('ansible.builtin.template', './templates/user-data.yaml.j2') }}"
+      tags:
+        Name: "{{ instance_name }}"
+    register: ec2_instance
+
+  - name: Print public dns
+    ansible.builtin.debug:
+      var: ec2_instance.instances[0].public_dns_name
