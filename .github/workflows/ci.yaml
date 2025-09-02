@@ -30,6 +30,13 @@ jobs:
             activation_key: ${{ secrets.ACTIVATION_KEY }}
           run: subscription-manager register --org=$orgid --activationkey=$activation_key
         
+        - name: Workaround open podman-login action issue
+          env:
+            auth: "{ \"auths\": {} }"
+          run: |
+            mkdir -p $HOME/.docker
+            echo $auth > $HOME/.docker/config.json
+
         - name: login to registry.redhat.io
           uses: redhat-actions/podman-login@v1
           with:
