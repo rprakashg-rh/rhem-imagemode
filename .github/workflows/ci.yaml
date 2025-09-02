@@ -61,6 +61,7 @@ jobs:
           with:
             image: ${{ env.IMAGE_NAME }}
             tags: ${{ env.IMAGE_TAG }}    
+            context: ./build/rhem-server/
             containerfiles: |
                 ./build/rhem-server/Containerfile
             extra-args: --secret id=creds,src=/run/containers/0/auth.json
