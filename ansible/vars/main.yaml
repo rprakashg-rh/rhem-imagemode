@@ -1,5 +1,8 @@
+ami_name: rhem-server-x86_64
 ami_bucket_name: bootc-amis 
 aws_region: us-west-2
 registry: quay.io
 user: rgopinat
 secret: registry_password
+domain_name: edgemanager.sandbox390.opentlc.com
+email: ram.gopinathan@redhat.com

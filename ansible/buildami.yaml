@@ -1,0 +1,26 @@
+---
+- name: Build AMI playbook
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  vars_files:
+  - ./vars/main.yaml
+  tasks:
+  - name: Build AMI using Bib
+    containers.podman.podman_container:
+      command: "--local --type ami --aws-ami-name {{ ami_name }} --aws-bucket {{ ami_bucket_name }} --aws-region {{ aws_region }} {{ registry }}/{{ user }}/rhem-server:aws"
+      authfile: "{{ lookup('env','PULL_SECRET') }}"
+      env:
+        AWS_ACCESS_KEY_ID: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+        AWS_SECRET_ACCESS_KEY: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+        AWS_DEFAULT_REGION: "{{ lookup('env','AWS_DEFAULT_REGION') }}"
+        AWS_ACCOUNT_ID: "{{ lookup('env','AWS_ACCOUNT_ID') }}"
+      image: registry.redhat.io/rhel9/bootc-image-builder:latest
+      log_level: debug
+      name: "amibuilder"
+      privileged: true
+      rm: true
+      security_opt:
+      - 'label=type:unconfined_t'
+      volume:
+      - "var/lib/containers/storage:/var/lib/containers/storage:Z"

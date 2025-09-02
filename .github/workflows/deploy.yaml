@@ -1,0 +1,20 @@
+---
+name: Deploy RHEM on ImageMode
+on:
+    workflow_dispatch:
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Clone source
+          uses: actions/checkout@v4
+        - name: Setup ansible
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y ansible
+        - name: Run ansible playbook
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          run: |
+            ansible-playbook ./ansible/deploy.yaml
