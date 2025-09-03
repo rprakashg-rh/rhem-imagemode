@@ -56,7 +56,7 @@
     amazon.aws.ec2_key:
       name: "{{ key_name }}"
       key_material: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
-    state: present
+      state: present
 
   - name: Launch ec2 instance
     amazon.aws.ec2_instance:
