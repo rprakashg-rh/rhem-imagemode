@@ -23,9 +23,6 @@ RUN dnf \
     && dnf clean all \
     && rm -rf /var/{cache,log} /var/lib/{dnf,rhsm}
 
-# Modify the SELinux config
-# RUN sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-
 # Install FlightCTL services
 RUN dnf \
     install -y \
