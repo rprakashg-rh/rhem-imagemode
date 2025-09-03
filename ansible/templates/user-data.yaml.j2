@@ -11,3 +11,5 @@ runcmd:
   - echo "Welcome to RHEM on RHEL Image Mode!" > /etc/motd
   - mkdir -p /etc/flightctl/certs.d
   - mkdir -p /etc/flightctl/conf.d
+  - sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+  - systemctl enable flightctl.target 
