@@ -53,11 +53,11 @@
     ansible.builtin.include_vars:
       file: "./vars/secrets.yml"
   
-  - name: Add the SSH key if doesn't exist
-    amazon.aws.ec2_key:
-      name: "{{ key_name }}"
-      key_material: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
-      state: present
+  #- name: Add the SSH key if doesn't exist
+  #  amazon.aws.ec2_key:
+  #    name: "{{ key_name }}"
+  #    key_material: "{{ lookup('file', '~/.ssh/{{ key_name }}.pub') }}"
+  #    state: present
 
   - name: Launch ec2 instance
     amazon.aws.ec2_instance:

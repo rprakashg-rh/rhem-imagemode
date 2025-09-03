@@ -27,13 +27,14 @@ jobs:
           run: |
             ansible-galaxy collection install amazon.aws
 
-        - name: Set up SSH key
-          run: |
-            mkdir -p ~/.ssh
-            echo "${{ secrets.SSH_KEY_PUB }}" > ~/.ssh/${{ secrets.SSH_KEY_NAME }}.pub
-            chmod 600 ~/.ssh/${{ secrets.SSH_KEY_NAME }}.pub
-            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/${{ secrets.SSH_KEY_NAME }}
-            chmod 600 ~/.ssh/${{ secrets.SSH_KEY_NAME }}
+        #- name: Set up SSH key
+        #  run: |
+        #    mkdir -p ~/.ssh
+        #    echo "${{ secrets.SSH_KEY_PUB }}" > ~/.ssh/${{ secrets.SSH_KEY_NAME }}.pub
+        #    chmod 600 ~/.ssh/${{ secrets.SSH_KEY_NAME }}.pub
+        #    echo "${{ secrets.SSH_KEY }}" > ~/.ssh/${{ secrets.SSH_KEY_NAME }}
+        #    chmod 600 ~/.ssh/${{ secrets.SSH_KEY_NAME }}
+            
         - name: Run ansible playbook
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
