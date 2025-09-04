@@ -1,13 +1,13 @@
 [Unit]
 Description=Keycloak Identity Server
-After=network.target ssonet.network postgres.container
-Wants=ssonet.network postgres.container
+Requires=postgresql.service
+After=network.target
 
 [Container]
 Label=app=keycloak
 Image=quay.io/keycloak/keycloak:24.0.4
-Name=keycloak
-Network=ssonet
+ContainerName=keycloak
+Network=flightctl.network
 Environment=KEYCLOAK_ADMIN=admin
 Environment=KEYCLOAK_ADMIN_PASSWORD=admin
 Environment=KC_DB=postgres
@@ -16,9 +16,14 @@ Environment=KC_DB_URL_PORT=5432
 Environment=KC_DB_URL_DATABASE=keycloak
 Environment=KC_DB_USERNAME=keycloak
 Environment=KC_DB_PASSWORD=keycloak
-Volume=keycloak-data:/opt/keycloak/data
+Volume=keycloak-data:/opt/keycloak/data:Z
+
 PublishPort=8080:8080
-ExecStart=/opt/keycloak/bin/kc.sh start
+Exec=/opt/keycloak/bin/kc.sh start
+
+[Service]
+Restart=always
+RestartSec=30
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

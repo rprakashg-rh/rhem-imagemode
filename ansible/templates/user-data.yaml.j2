@@ -12,4 +12,11 @@ runcmd:
   - mkdir -p /etc/flightctl/certs.d
   - mkdir -p /etc/flightctl/conf.d
   - sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-  - systemctl enable flightctl.target 
+  - systemctl enable flightctl.target
+
+write_files:
+- path: /etc/flightctl/certs.d/fullchain.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+    {{ lookup('file', '/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem') }}

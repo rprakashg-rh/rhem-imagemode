@@ -1,17 +1,19 @@
 [Unit]
 Description=PostgreSQL for Keycloak
-After=network.target ssonet.network
-Wants=ssonet.network
+After=network.target
 
 [Container]
-Image=postgres:16
-Name=postgres
-Network=ssonet
+Label=app=keycloak
+Image=quay.io/sclorg/postgresql-16-c9s:latest
+ContainerName=keycloak-db
+Network=flightctl.network
 Environment=POSTGRES_DB=keycloak
 Environment=POSTGRES_USER=keycloak
 Environment=POSTGRES_PASSWORD=keycloak
-Volume=keycloak-db:/var/lib/postgresql/data
+
+Volume=pg-data:/var/lib/postgresql/data:Z
+
 PublishPort=5432:5432
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
