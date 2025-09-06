@@ -8,15 +8,30 @@ users:
   sudo: ['ALL=(ALL) NOPASSWD:ALL']
 
 runcmd:
-  - echo "Welcome to RHEM on RHEL Image Mode!" > /etc/motd
-  - mkdir -p /etc/flightctl/certs.d
-  - mkdir -p /etc/flightctl/conf.d
-  - sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-  - systemctl enable flightctl.target
+- echo "Welcome to RHEM on RHEL Image Mode!" > /etc/motd
+- mkdir -p /etc/flightctl/certs.d
+- mkdir -p /etc/flightctl/conf.d
+- sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+- systemctl enable flightctl.target
 
 write_files:
-- path: /etc/flightctl/certs.d/fullchain.pem
+- path: /etc/flightctl/certs.d/ui-fullchain.pem
   permissions: '0755'
   owner: 'root:root'
   content: |
-    {{ lookup('file', '/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem') }}
+    {{- lookup('file', '/etc/letsencrypt/live/{{ ui }}/fullchain.pem') }}
+- path: /etc/flightctl/certs.d/ui-privkey.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+    {{- lookup('file', '/etc/letsencrypt/live/{{ ui }}/privkey.pem') }}
+- path: /etc/flightctl/certs.d/api-fullchain.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+    {{- lookup('file', '/etc/letsencrypt/live/{{ api }}/fullchain.pem') }}
+- path: /etc/flightctl/certs.d/api-privkey.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+    {{- lookup('file', '/etc/letsencrypt/live/{{ api }}/privkey.pem') }}

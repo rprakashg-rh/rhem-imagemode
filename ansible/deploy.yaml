@@ -36,19 +36,32 @@
       group: root
       mode: '0600'
 
-  - name: Generate a certificate
+  - name: Generate certificate for RHEM UI
     ansible.builtin.command: >
       certbot certonly --non-interactive --agree-tos
       --email {{ email }}
       --dns-route53
-      -d {{ domain_name }}
+      -d {{ ui }}
     args:
-      creates: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+      creates: "/etc/letsencrypt/live/{{ ui }}/fullchain.pem"
 
   - name: Show certificate location
     ansible.builtin.debug:
-      msg: "Certificate installed at /etc/letsencrypt/live/{{ domain_name }}/"
-  
+      msg: "Certificate installed at /etc/letsencrypt/live/{{ ui }}/"
+
+  - name: Generate certificate for RHEM API Server
+    ansible.builtin.command: >
+      certbot certonly --non-interactive --agree-tos
+      --email {{ email }}
+      --dns-route53
+      -d {{ api }}
+    args:
+      creates: "/etc/letsencrypt/live/{{ api }}/fullchain.pem"
+
+  - name: Show certificate location
+    ansible.builtin.debug:
+      msg: "Certificate installed at /etc/letsencrypt/live/{{ api }}/"
+
   - name: load secrets 
     ansible.builtin.include_vars:
       file: "./vars/secrets.yml"

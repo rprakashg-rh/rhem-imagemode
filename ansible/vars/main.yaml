@@ -5,7 +5,9 @@ registry: quay.io
 user: rgopinat
 
 # certificate related data
-domain_name: edgemanager.sandbox390.opentlc.com
+base_domain: edgemanager.sandbox390.opentlc.com
+ui: "ui.{{ base_domain }}"
+api: "api.{{ base_domain }}"
 email: ram.gopinathan@redhat.com
 
 # Instance related data
