@@ -1,0 +1,14 @@
+---
+- name: Test Ansible Playbook
+  hosts: localhost
+  gather_facts: yes
+  vars_files:
+  - vars/main.yaml
+  tasks:
+  - name: load secrets 
+    ansible.builtin.include_vars:
+      file: "./vars/secrets.yml"
+  - name: template
+    ansible.builtin.template:
+      src: templates/test-user-data.yaml.j2
+      dest: test-user-data.yaml

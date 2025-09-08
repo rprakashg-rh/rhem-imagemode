@@ -1,0 +1,27 @@
+#cloud-config
+users:
+- name: "{{ admin_user }}"
+  ssh_authorized_keys: 
+  - "{{ ssh_key }}"
+  groups: ["wheel"]
+  shell: /bin/bash
+  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+runcmd:
+- echo "Welcome to RHEM on RHEL Image Mode!" > /etc/motd
+- mkdir -p /etc/flightctl/certs.d
+- mkdir -p /etc/flightctl/conf.d
+- sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+- systemctl enable flightctl.target
+
+write_files:
+- path: /etc/flightctl/certs.d/options-ssl-apache.conf
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/options-ssl-apache.conf') | indent(4, true) }}
+- path: /etc/flightctl/certs.d/options-ssl-apache.conf
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/options-ssl-apache.conf') | indent(4, true) }}
