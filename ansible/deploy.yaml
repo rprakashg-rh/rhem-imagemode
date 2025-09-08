@@ -62,6 +62,19 @@
     ansible.builtin.debug:
       msg: "Certificate installed at /etc/letsencrypt/live/{{ api }}/"
 
+  - name: Generate certificate for RHEM SSO Server
+    ansible.builtin.command: >
+      certbot certonly --non-interactive --agree-tos
+      --email {{ email }}
+      --dns-route53
+      -d {{ sso }}
+    args:
+      creates: "/etc/letsencrypt/live/{{ sso }}/fullchain.pem"
+  
+  - name: Show certificate location
+    ansible.builtin.debug:
+      msg: "Certificate installed at /etc/letsencrypt/live/{{ sso }}/"
+
   - name: load secrets 
     ansible.builtin.include_vars:
       file: "./vars/secrets.yml"

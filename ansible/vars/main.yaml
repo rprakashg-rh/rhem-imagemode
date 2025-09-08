@@ -8,6 +8,7 @@ user: rgopinat
 base_domain: edgemanager.sandbox390.opentlc.com
 ui: "ui.{{ base_domain }}"
 api: "api.{{ base_domain }}"
+sso: "sso.{{ base_domain }}"
 email: ram.gopinathan@redhat.com
 
 # Instance related data

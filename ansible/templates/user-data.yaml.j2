@@ -29,9 +29,19 @@ write_files:
   permissions: '0755'
   owner: 'root:root'
   content: |
-{{ lookup('file', '/etc/letsencrypt/live/{{ api }}/fullchain.pem') | indent(2, true) }}
+{{ lookup('file', '/etc/letsencrypt/live/{{ api }}/fullchain.pem') | indent(4, true) }}
 - path: /etc/flightctl/certs.d/api-privkey.pem
   permissions: '0755'
   owner: 'root:root'
   content: |
-    {{ lookup('file', '/etc/letsencrypt/live/{{ api }}/privkey.pem') | indent(2, true) }}
+{{ lookup('file', '/etc/letsencrypt/live/{{ api }}/privkey.pem') | indent(4, true) }}
+- path: /etc/flightctl/certs.d/sso-fullchain.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/live/{{ sso }}/fullchain.pem') | indent(4, true) }}
+- path: /etc/flightctl/certs.d/sso-privkey.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/live/{{ sso }}/privkey.pem') | indent(4, true) }}
