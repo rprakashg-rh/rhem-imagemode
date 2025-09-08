@@ -1,7 +1,6 @@
 [Unit]
 Description=Keycloak Identity Server
 Requires=postgresql.service
-After=network.target
 
 [Container]
 Label=app=keycloak
@@ -26,4 +25,4 @@ Restart=always
 RestartSec=30
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sso.target

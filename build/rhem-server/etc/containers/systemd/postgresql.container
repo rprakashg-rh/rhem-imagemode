@@ -1,6 +1,5 @@
 [Unit]
 Description=PostgreSQL for Keycloak
-After=network.target
 
 [Container]
 Label=app=keycloak
@@ -16,4 +15,4 @@ Volume=pg-data:/var/lib/postgresql/data:Z
 PublishPort=5432:5432
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sso.target
