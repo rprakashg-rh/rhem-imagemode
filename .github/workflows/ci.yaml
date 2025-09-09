@@ -84,7 +84,7 @@ jobs:
             containerfiles: |
                 ./build/cloud-init/Containerfile
             build-args: |
-                FROM=${{ steps.build-image.outputs.image }}
+                FROM=${{ env.REGISTRY }}/${{ steps.build-image.outputs.image }}
 
         - name: Push the cloud-init overlay image to registry
           uses: redhat-actions/push-to-registry@v2
