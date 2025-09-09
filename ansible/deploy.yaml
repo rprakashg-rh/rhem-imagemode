@@ -75,6 +75,23 @@
     ansible.builtin.debug:
       msg: "Certificate installed at /etc/letsencrypt/live/{{ sso }}/"
 
+  - name: Generate api config
+    block:
+    - name: Create a temp directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: flightctl-api
+      register: configdir
+
+    - name: Set in facts
+      ansible.builtin.set_fact:
+        custom_config_dir: "{{ configdir.path }}"
+
+    - name: Generate
+      ansible.builtin.template:
+        src: "./templates/api-config.yaml.j2"
+        dest: "{{ custom_config_dir }}/api-config.yaml"
+
   - name: load secrets 
     ansible.builtin.include_vars:
       file: "./vars/secrets.yml"

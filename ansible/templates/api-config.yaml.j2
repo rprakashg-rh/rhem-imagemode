@@ -7,11 +7,11 @@ database:
 service:
   address: flightctl-api:3443
   agentEndpointAddress: flightctl-api:7443
-  baseUrl: https://10.0.3.206:3443/
-  baseAgentEndpointUrl: https://10.0.3.206:7443/
-  baseUIUrl: https://10.0.3.206:443
+  baseUrl: "https://{{ api }}:3443"
+  baseAgentEndpointUrl: "https://{{ api }}:7443"
+  baseUIUrl: "https://{{ ui }}:443"
   altNames:
-    - 10.0.3.206
+    - "{{ api }}"
     - flightctl-api
   srvCertFile: /root/.flightctl/certs/server.crt
   srvKeyFile: /root/.flightctl/certs/server.key
@@ -20,4 +20,4 @@ kv:
   port: 6379
 auth:
   insecureSkipTlsVerify: false
-  caCert:
+  caCert: {}
