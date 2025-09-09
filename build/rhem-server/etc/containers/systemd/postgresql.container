@@ -14,5 +14,9 @@ Volume=pg-data:/var/lib/postgresql/data:Z
 
 PublishPort=5432:5432
 
+[Service]
+Restart=always
+RestartSec=30
+
 [Install]
 WantedBy=sso.target
