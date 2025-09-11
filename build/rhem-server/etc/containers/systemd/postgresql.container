@@ -1,9 +1,11 @@
 [Unit]
 Description=PostgreSQL Database for Keycloak
-PartOf=flightctl.target
+PartOf=sso.target
 
 [Container]
 ContainerName=keycloak-db
+Image=quay.io/sclorg/postgresql-16-c9s:latest
+Network=flightctl.network
 
 Environment=POSTGRESQL_DATABASE=keycloak
 Environment=POSTGRESQL_USER=keycloak
@@ -11,10 +13,7 @@ Environment=POSTGRESQL_PASSWORD=keycloak
 Environment=POSTGRESQL_MASTER_USER=admin
 Environment=POSTGRESQL_MASTER_PASSWORD=admin
 
-Image=quay.io/sclorg/postgresql-16-c9s:latest
-Network=flightctl.network
-
-Volume=pg-data:/var/lib/postgresql/data:Z
+Volume=pgsql-data:/var/lib/postgresql/data:Z
 Volume=/usr/share/flightctl/flightctl-db/enable-superuser.sh:/usr/share/container-scripts/postgresql/start/enable-superuser.sh
 
 [Service]
@@ -25,4 +24,4 @@ RestartSec=30
 PublishPort=5433:5432
 
 [Install]
-WantedBy=flightctl.target
+WantedBy=sso.target

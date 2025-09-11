@@ -2,5 +2,5 @@
 Description=Postgresql Data volume
 
 [Volume]
-VolumeName=pg-data
+VolumeName=pgsql-data
 Label=app=keycloak

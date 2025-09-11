@@ -1,5 +1,6 @@
 [Unit]
 Description=Keycloak Identity Server
+PartOf=sso.target
 Requires=postgresql.service
 
 [Container]
@@ -10,8 +11,8 @@ Network=flightctl.network
 Environment=KEYCLOAK_ADMIN=admin
 Environment=KEYCLOAK_ADMIN_PASSWORD=admin
 Environment=KC_DB=postgres
-Environment=KC_DB_URL_HOST=postgres
-Environment=KC_DB_URL_PORT=5432
+Environment=KC_DB_URL_HOST=keycloak-db
+Environment=KC_DB_URL_PORT=5433
 Environment=KC_DB_URL_DATABASE=keycloak
 Environment=KC_DB_USERNAME=keycloak
 Environment=KC_DB_PASSWORD=keycloak
