@@ -12,7 +12,7 @@ sso: "sso.{{ base_domain }}"
 email: ram.gopinathan@redhat.com
 
 # Instance related data
-ami: ami-0e32e85f3aa18d085
+ami: ami-0b6e5c36a83850b8a
 instance_name: rhem-server
 instance_type: t2.2xlarge
 key_name: ec2

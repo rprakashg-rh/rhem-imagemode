@@ -19,7 +19,7 @@ Environment=KC_DB_PASSWORD=keycloak
 Volume=keycloak-data:/opt/keycloak/data:Z
 
 PublishPort=8080:8080
-Exec=/opt/keycloak/bin/kc.sh start
+Exec=/opt/keycloak/bin/kc.sh start --optimized --hostname=keycloak
 
 [Service]
 Restart=always
