@@ -4,7 +4,7 @@ PartOf=sso.target
 
 [Container]
 ContainerName=keycloak-db
-Image=quay.io/sclorg/postgresql-16-c9s:latest
+Image=registry.redhat.io/rhel9/postgresql-16
 Network=flightctl.network
 
 Environment=POSTGRESQL_DATABASE=keycloak
@@ -14,10 +14,8 @@ Environment=POSTGRESQL_MASTER_USER=admin
 Environment=POSTGRESQL_MASTER_PASSWORD=admin
 
 Volume=pgsql-data:/var/lib/postgresql/data:Z
-Volume=/usr/share/flightctl/flightctl-db/enable-superuser.sh:/usr/share/container-scripts/postgresql/start/enable-superuser.sh
 
 [Service]
-ExecStartPre=/usr/share/flightctl/init_host.sh
 Restart=always
 RestartSec=30
 
