@@ -3,4 +3,4 @@ Description=Postgresql Data volume
 
 [Volume]
 VolumeName=pgsql-data
-Label=app=keycloak
+Label=app=keycloak-db
