@@ -1,0 +1,29 @@
+[Unit]
+Description=Keycloak Identity Server
+PartOf=sso.target
+Requires=postgresql.service
+
+[Container]
+Label=app=keycloak
+Image=quay.io/keycloak/keycloak:24.0.4
+ContainerName=keycloak
+Network=flightctl.network
+Environment=KEYCLOAK_ADMIN=admin
+Environment=KEYCLOAK_ADMIN_PASSWORD=admin
+Environment=KC_DB=postgres
+Environment=KC_DB_URL_HOST=keycloak-db
+Environment=KC_DB_URL_PORT=5433
+Environment=KC_DB_URL_DATABASE=keycloak
+Environment=KC_DB_USERNAME=keycloak
+Environment=KC_DB_PASSWORD=keycloak
+Volume=keycloak-data:/opt/keycloak/data:Z
+
+PublishPort=8080:8080
+Exec=/opt/keycloak/bin/kc.sh start --optimized --hostname=keycloak
+
+[Service]
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=sso.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Keycloak Container Volume
+
+[Volume]
+VolumeName=keycloak-data
+Label=app=keycloak
