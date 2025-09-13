@@ -21,13 +21,15 @@ RUN dnf \
     podman \
     tmux \
     mkpasswd \
+    git \
+    ansible-core \
     && dnf clean all \
     && rm -rf /var/{cache,log} /var/lib/{dnf,rhsm}
 
-# Install FlightCTL services
+# Install FlightCTL cli
 RUN dnf \
     install -y \
-    flightctl-services \
+    flightctl \
     && rm -rf /var/{cache,log} /var/lib/{dnf,rhsm}
 
 CMD [ "/sbin/init" ]

@@ -45,6 +45,16 @@ write_files:
   owner: 'root:root'
   content: |
 {{ lookup('file', '/etc/letsencrypt/live/{{ sso }}/privkey.pem') | indent(4, true) }}
+- path: /etc/flightctl/certs.d/enrollment-fullchain.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/live/{{ enrollment }}/fullchain.pem') | indent(4, true) }}
+- path: /etc/flightctl/certs.d/enrollment-privkey.pem
+  permissions: '0755'
+  owner: 'root:root'
+  content: |
+{{ lookup('file', '/etc/letsencrypt/live/{{ enrollment }}/privkey.pem') | indent(4, true) }}
 - path: /etc/flightctl/conf.d/api-config.yaml
   permissions: '0755'
   owner: 'root:root'

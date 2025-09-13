@@ -74,6 +74,19 @@
   - name: Show certificate location
     ansible.builtin.debug:
       msg: "Certificate installed at /etc/letsencrypt/live/{{ sso }}/"
+  
+  - name: Generate client enrollment certificate
+    ansible.builtin.command: >
+      certbot certonly --non-interactive --agree-tos
+      --email {{ email }}
+      --dns-route53
+      -d {{ enrollment }}
+    args:
+      creates: "/etc/letsencrypt/live/{{ enrollment }}/fullchain.pem"
+
+  - name: Show certificate location
+    ansible.builtin.debug:
+      msg: "Certificate installed at /etc/letsencrypt/live/{{ enrollment }}/"
 
   - name: Generate api config
     block:

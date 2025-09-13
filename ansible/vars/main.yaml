@@ -10,6 +10,7 @@ ui: "ui.{{ base_domain }}"
 api: "api.{{ base_domain }}"
 sso: "sso.{{ base_domain }}"
 email: ram.gopinathan@redhat.com
+enrollment: "enrollment.{{ base_domain }}"
 
 # Instance related data
 ami: ami-0b6e5c36a83850b8a
